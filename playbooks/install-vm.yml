@@ -41,4 +41,4 @@
       sudo: no
     - action: setup
   roles:
-    - empty
+    - users

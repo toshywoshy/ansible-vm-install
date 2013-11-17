@@ -1,0 +1,6 @@
+- name: create user
+  action: user name={{ item.name }} uid={{ item.id }}
+  with_items: users
+- name: copy ssh public key
+  action: authorized_key user={{ item.name }} key="{{ lookup('file','item.sshpubkey') }}"
+  with_items: users
