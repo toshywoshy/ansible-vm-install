@@ -1,0 +1,41 @@
+---
+hyper: hvm1
+distro: centos6
+rootpwd:
+virtualfilespath: /virtual/
+disks:
+  - { path: /virtual/centos6-boot.qcow2 , size: 1 }
+  - { path: /virtual/centos6-root0.qcow2 , size: 9 }
+  - { path: /virtual/centos6-home0.qcow2 , size: 9 }
+  - { path: /virtual/centos6-home1.qcow2 , size: 9 }
+  - { path: /virtual/centos6-var0.qcow2 , size: 27 }
+  - { path: /virtual/centos6-swap0.qcow2 , size: 1 }
+  - { path: /virtual/centos6-swap1.qcow2 , size: 1 }
+vmwaittime: 10
+virtualcpus: 2
+ramsize: 1024
+language: en_US
+keyboard: us
+timezone: "Europe/Brussels"
+nics:
+  - { type: bridge , name: br1 , model: virtio }
+networks:
+  - network --bootproto=dhcp --device=eth0 --onboot=on --hostname=centos6
+partitions:
+  - part /boot --ondisk=vda --asprimary --fstype="ext4" --fsoptions='defaults,noatime,discard' --grow --size=1
+  - part pv.01 --ondisk=vdb --asprimary --grow --size=1
+  - volgroup VolGroupRoot --pesize=131072 pv.01
+  - logvol / --fstype="ext4" --fsoptions='defaults,noatime,discard' --name=LogVolRoot0 --vgname=VolGroupRoot --grow --size=1
+  - part pv.02 --ondisk=vdc --asprimary --grow --size=1
+  - part pv.03 --ondisk=vdd --asprimary --grow --size=1
+  - volgroup VolGroupHome --pesize=131072 pv.02 pv.03
+  - logvol /home --fstype="ext4" --fsoptions='defaults,noatime,discard' --name=LogVolHome0 --vgname=VolGroupHome --grow --size=1
+  - part pv.04 --ondisk=vde --asprimary --grow --size=1
+  - volgroup VolGroupVar --pesize=131072 pv.04
+  - logvol /var --fstype="ext4" --fsoptions='defaults,noatime,discard' --name=LogVolVar0 --vgname=VolGroupVar --grow --size=1
+  - part swap --onpart=vdf --asprimary --fstype="swap" --fsoption='discard' --grow --size=1
+  - part swap --onpart=vdg --asprimary --fstype="swap" --fsoption='discard' --grow --size=1
+bootloader: bootloader --location=mbr --driveorder=vda,vdb,vdc,vdd,vde
+sshdkeylength: 8192
+users:
+  - { name: supervisor , id: 1000 , sshpubkey: /home/toshywoshy/.keys/id_trivikrama.pub }

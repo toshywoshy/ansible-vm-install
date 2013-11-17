@@ -1,0 +1,16 @@
+[hypervisors]
+    hvm1
+
+[vm]
+    centos6
+    scientific6
+    rhel6
+    sles10
+    sles11
+    debian6
+    debian7
+    fedora18
+    fedora19
+    opensuse123
+    opensuse131
+    ubuntu1310
