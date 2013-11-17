@@ -1,0 +1,12 @@
+---
+distroname: centos6
+distrotype: rhel6
+minram: 512
+installconfigfile: "el6/kickstart.cfg"
+location: "http://be.mirror.eurid.eu/centos/6/os/x86_64/"
+repos:
+  - { name: "CentOS-base", uri: "http://be.mirror.eurid.eu/centos/6/os/x86_64/", cost: 100 }
+  - { name: "CentOS-updates", uri: "http://be.mirror.eurid.eu/centos/6/updates/x86_64/", cost: 200 }
+  - { name: "CentOS-fasttrack", uri: "http://be.mirror.eurid.eu/centos/6/fasttrack/x86_64/", cost: 300 }
+  - { name: "CentOS-extras", uri: "http://be.mirror.eurid.eu/centos/6/extras/x86_64/", cost: 400 }
+textrargs: 'text ks=file:/{{ inventory_hostname }}.cfg console=ttyS0,115200 headless noshell nofirewire'
