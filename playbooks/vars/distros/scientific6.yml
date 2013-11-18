@@ -1,0 +1,11 @@
+---
+distroname: scientific6
+distrotype: rhel6
+minram: 512
+installconfigfile: "el6/kickstart.cfg"
+location: "http://be.mirror.eurid.eu/scientific/6x/x86_64/os/"
+repos:
+  - { name: "SL6-base", uri: "http://be.mirror.eurid.eu/scientific/6x/x86_64/os/", cost: 100 }
+  - { name: "SL6-security", uri: "http://be.mirror.eurid.eu/scientific/6x/x86_64/updates/security", cost: 200 }
+  - { name: "SL6-fastbugs", uri: "http://be.mirror.eurid.eu/scientific/6x/x86_64/updates/fastbugs", cost: 300 }
+textrargs: 'text ks=file:/{{ inventory_hostname }}.cfg console=ttyS0,115200 headless noshell nofirewire'

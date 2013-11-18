@@ -1,0 +1,30 @@
+---
+hyper: hvm1
+distro: rhel6
+rootpwd:
+virtualfilespath: /virtual/
+disks:
+  - { path: /virtual/rhel6-boot.qcow2 , size: 1 }
+  - { path: /virtual/rhel6-root0.qcow2 , size: 9 }
+  - { path: /virtual/rhel6-swap0.qcow2 , size: 1 }
+vmwaittime: 10
+virtualcpus: 1
+ramsize: 512
+language: en_US
+keyboard: us
+timezone: "Europe/Brussels"
+nics:
+  - { type: bridge , name: br0 , model: virtio }
+networks:
+  - network --bootproto=dhcp --device=eth0 --onboot=on --hostname=rhel6
+partitions:
+  - part /boot --ondisk=vda --asprimary --fstype="ext4" --fsoptions='defaults,noatime,discard' --grow --size=1
+  - part pv.01 --ondisk=vdb --asprimary --grow --size=1
+  - volgroup VolGroupRoot --pesize=131072 pv.01
+  - logvol / --fstype="ext4" --fsoptions='defaults,noatime,discard' --name=LogVolRoot0 --vgname=VolGroupRoot --grow --size=1
+  - part swap --onpart=vdf --asprimary --fstype="swap" --fsoption='discard' --grow --size=1
+  - part swap --onpart=vdg --asprimary --fstype="swap" --fsoption='discard' --grow --size=1
+bootloader: bootloader --location=mbr --driveorder=vda,vdb,vdc,vdd,vde
+sshdkeylength: 8192
+users:
+  - { name: user , id: 1000 , sshpubkey: /path/to/sshkey.pub }

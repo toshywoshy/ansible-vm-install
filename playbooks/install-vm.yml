@@ -1,0 +1,44 @@
+---
+- name: install-vm
+  hosts: "{{ host }}"
+  vars_files:
+    - "vars/distros/{{ distro }}.yml"
+  gather_facts: no
+  sudo: yes
+  pre_tasks:
+    - local_action: slurp src={{ ansible_ssh_private_key_file }}.pub
+      sudo: no
+      register: sshpubkey
+    - action: qemu-img dest={{ item.path }} size={{ item.size }} format="qcow2" options="preallocation=metadata"
+      delegate_to: "{{ hyper }}"
+      with_items: disks
+    - action: command /bin/bash {{ virtualfilespath }}{{ inventory_hostname }}-create-disks.sh
+      delegate_to: "{{ hyper }}"
+    - action: template src="templates/{{ installconfigfile }}"  dest="{{ virtualfilespath }}{{ inventory_hostname }}.cfg"
+      delegate_to: "{{ hyper }}"
+    - action: template src="templates/common/install-vm.sh"  dest="{{ virtualfilespath }}{{ inventory_hostname }}-create-vm.sh" owner=root group=root mode=770
+      delegate_to: "{{ hyper }}"
+    - action: command /bin/bash {{ virtualfilespath }}{{ inventory_hostname }}-create-vm.sh
+      delegate_to: "{{ hyper }}"
+      register: createdvm
+    - local_action: pause minutes={{ vmwaittime }}
+    - action: template src="templates/common/minram.sh"  dest="{{ virtualfilespath }}{{ inventory_hostname }}-minram.sh" owner=root group=root mode=770
+      delegate_to: "{{ hyper }}"
+      when: ramsize < minram
+    - action: command /bin/bash {{ virtualfilespath }}{{ inventory_hostname }}-minram.sh
+      delegate_to: "{{ hyper }}"
+      when: ramsize < minram
+    - action: virt guest={{ inventory_hostname }} command=start
+      delegate_to: "{{ hyper }}"
+      ignore_errors: yes
+    - action: file path={{ item }} state=absent
+      delegate_to: "{{ hyper }}"
+      with_items:
+        - "{{ virtualfilespath }}{{ inventory_hostname }}-create-vm.sh"
+        - "{{ virtualfilespath }}{{ inventory_hostname }}.cfg"
+        - "{{ virtualfilespath }}{{ inventory_hostname }}-minram.sh"
+    - local_action: wait_for host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} delay=5 state=started timeout=300
+      sudo: no
+    - action: setup
+  roles:
+    - users

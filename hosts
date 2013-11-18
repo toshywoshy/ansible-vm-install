@@ -1,0 +1,7 @@
+[hypervisors]
+    hvm1
+
+[vm]
+    centos6
+    scientific6
+    rhel6
