@@ -1,0 +1,29 @@
+---
+hyper: hvm1
+distro: debian7
+locale: en_US.UTF-8
+keyboard: us
+timezone: Europe/Brussels
+rootpwd: $1$aE.CIrlH$0O/ReCFABgz49g2fvw02D.
+virtualfilespath: /virtual/
+disks:
+  - { path: /virtual/debian7-boot0.qcow2 , size: 1G , name: vda }
+  - { path: /virtual/debian7-root0.qcow2 , size: 9G , name: vdb }
+  - { path: /virtual/debian7-home0.qcow2 , size: 9G , name: vdc }
+  - { path: /virtual/debian7-swap0.qcow2 , size: 1G , name: vdd }
+virtualcpus: 1
+ramsize: 128
+nics:
+  - { type: bridge , name: br0 , model: virtio }
+vmwaittime: 10
+sshdkeylength: 8192
+networks:
+  - { name: eth0 , ipaddress: 192.168.122.2 , netmask: 255.255.255.0 , gateway: 192.168.122.1 , nameserver: 192.168.122.1 }
+partitions:
+  - '512 10 2048 ext3 $defaultignore{ } $primary{ } $bootable{ } method{ format } format{ } use_filesystem{ } filesystem{ ext3 } mountpoint{ /boot } options/noatime{ noatime } device{ /dev/vda } .'
+  - '500 10000 1000000000 ext4 method{ lvm } vg_name{ rootvg } device{ /dev/vdb } .'
+  - '500 10000 1000000000 ext4 $lvmok{ } in_vg{ rootvg } lv_name{ rootlv0 } method{ format } format{ } use_filesystem{ } filesystem{ ext4 } mountpoint{ / } options/noatime{ noatime } .'
+  - '500 10000 1000000000 ext4 method{ lvm } vg_name{ homevg } device{ /dev/vdc } .'
+  - '500 10000 1000000000 ext4 $lvmok{ } in_vg{ homevg } lv_name{ homelv0 } method{ format } format{ } use_filesystem{ } filesystem{ ext4 } mountpoint{ /home } options/noatime{ noatime } .'
+  - '512 10 2048 linux-swap method{ lvm } vg_name{ swapvg } device{ /dev/vdd } .'
+  - '512 10 2048 linux-swap $lvmok{ } in_vg{ swapvg } lv_name { swaplv0 } method{ swap } format{ } device{ /dev/vdd } .'
