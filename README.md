@@ -20,6 +20,14 @@ The host file contains the information for building the vm
     -   kvm
 *   Distribution
     -   RHEL6 / CentOS 6 / Scientific 6
+    -   Debian 7 / Debian 6
+
+
+### Usage ###
+
+*   Set the mirrors to your local mirrors for better performance
+*   Remember to fill in your own webserver to enable Debian post install scripts to run
+*   For RHEL, use your own mirrored repository or mounted ISO to the variables
 
 
 ### TODO List ###
@@ -27,7 +35,6 @@ The host file contains the information for building the vm
     -   Fedora
     -   Arch Linux
     -   Gentoo
-    -   Debian
     -   Ubuntu
     -   OpenBSD
     -   FreeBSD
@@ -37,6 +44,6 @@ The host file contains the information for building the vm
 *   Less scripting, more modules
 
 
-### Author ###
+### Authors ###
 
 -   Toshaan Bharvani - <toshaan@vantosh.com> - (http://www.vantosh.com)
