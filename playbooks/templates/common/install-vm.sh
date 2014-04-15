@@ -31,11 +31,7 @@ virt-install \
     --network {{ nic.type }}={{ nic.name }},model={{ nic.model }} \
 {% endfor %}
     --location={{ location }} \
-{% if injectfile is defined %}
     --initrd-inject={{ virtualfilespath }}{{ injectfile }} \
-{% else %}
-    --initrd-inject={{ virtualfilespath }}{{ inventory_hostname }}.cfg \
-{% endif %}
 {% if graphics is defined %}
     --extra-args "{{ gextrargs }}" \
 {% else %}
