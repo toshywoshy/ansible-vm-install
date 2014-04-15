@@ -3,6 +3,7 @@ distroname: scientific6
 distrotype: rhel6
 minram: 512
 installconfigfile: "el6/kickstart.cfg"
+injectfile: "{{ inventory_hostname }}.cfg"
 location: "http://be.mirror.eurid.eu/scientific/6x/x86_64/os/"
 repos:
   - { name: "SL6-base", uri: "http://be.mirror.eurid.eu/scientific/6x/x86_64/os/", cost: 100 }

@@ -3,6 +3,7 @@ distroname: centos6
 distrotype: rhel6
 minram: 512
 installconfigfile: "el6/kickstart.cfg"
+injectfile: "{{ inventory_hostname }}.cfg"
 location: "http://be.mirror.eurid.eu/centos/6/os/x86_64/"
 repos:
   - { name: "CentOS-base", uri: "http://be.mirror.eurid.eu/centos/6/os/x86_64/", cost: 100 }

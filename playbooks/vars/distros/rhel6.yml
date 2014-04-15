@@ -3,6 +3,7 @@ distroname: rhel6
 distrotype: rhel6
 minram: 512
 installconfigfile: "el6/kickstart.cfg"
+injectfile: "{{ inventory_hostname }}.cfg"
 location:
 repos:
 textrargs: 'text ks=file:/{{ inventory_hostname }}.cfg console=ttyS0,115200 headless noshell nofirewire'
