@@ -28,10 +28,6 @@ The host file contains the information for building the vm
 *   Set the mirrors to your local mirrors for better performance
 *   Remember to fill in your own webserver to enable Debian post install scripts to run
 *   For RHEL, use your own mirrored repository or mounted ISO to the variables
-=======
-### Distributions ###
-
-*   RHEL6 / CentOS 6 / Scientific 6
 
 
 ### TODO List ###
