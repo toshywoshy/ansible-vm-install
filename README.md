@@ -1,3 +1,8 @@
+DEPRECIATED
+Please use the new version available at
+http://github.com/toshywoshy/ansible-role-vminstaller
+
+
 ansible-vm-install
 ==================
 
